@@ -5,3 +5,8 @@
   --font-sans: "Nunito", ui-sans-serif, system-ui, sans-serif;
   --font-serif: "Fredoka", ui-serif, Georgia, Cambria, "Times New Roman", Times, serif;
 }
+
+html {
+  scroll-behavior: smooth;
+}
+

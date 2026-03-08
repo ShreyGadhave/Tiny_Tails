@@ -1,4 +1,5 @@
 import { useState } from 'react';
+import { motion } from 'motion/react';
 import { useCart, Product } from '../context/CartContext';
 
 const PRODUCTS: Product[] = [
@@ -39,31 +40,40 @@ export default function Products() {
         <div key={category} className="mb-12">
           <h2 className="text-2xl font-bold text-[#4a4a4a] mb-6 border-b-2 border-gray-200 pb-2">{category}</h2>
           <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-6">
-            {PRODUCTS.filter(p => p.category === category).map(product => (
-              <div key={product.id} className="bg-white rounded-xl shadow-md overflow-hidden border border-gray-100 hover:shadow-lg transition-shadow">
+            {PRODUCTS.filter(p => p.category === category).map((product, index) => (
+              <motion.div
+                key={product.id}
+                initial={{ opacity: 0, y: 30 }}
+                animate={{ opacity: 1, y: 0 }}
+                transition={{ duration: 0.4, delay: index * 0.1, ease: 'easeOut' }}
+                whileHover={{ y: -6 }}
+                className="bg-white rounded-xl shadow-md overflow-hidden border border-gray-100 hover:shadow-lg transition-shadow"
+              >
                 <div className="h-48 overflow-hidden">
-                  <img 
-                    src={product.image} 
-                    alt={product.name} 
+                  <motion.img
+                    src={product.image}
+                    alt={product.name}
                     className="w-full h-full object-cover"
                     referrerPolicy="no-referrer"
+                    whileHover={{ scale: 1.08 }}
+                    transition={{ duration: 0.3 }}
                   />
                 </div>
                 <div className="p-4 text-center">
                   <h3 className="text-lg font-semibold text-gray-800">{product.name}</h3>
                   <p className="text-xl font-bold text-[#e67e22] mt-2">₹{product.price}</p>
-                  <button
+                  <motion.button
                     onClick={() => handleAddToCart(product)}
-                    className={`mt-4 w-full py-2 px-4 rounded-md font-medium transition-colors ${
-                      addedItems[product.id] 
-                        ? 'bg-green-500 text-white' 
+                    whileTap={{ scale: 0.95 }}
+                    className={`mt-4 w-full py-2 px-4 rounded-md font-medium transition-colors ${addedItems[product.id]
+                        ? 'bg-green-500 text-white'
                         : 'bg-[#f39c12] hover:bg-[#e67e22] text-white'
-                    }`}
+                      }`}
                   >
-                    {addedItems[product.id] ? 'Added!' : 'Add to Cart'}
-                  </button>
+                    {addedItems[product.id] ? '✓ Added!' : 'Add to Cart'}
+                  </motion.button>
                 </div>
-              </div>
+              </motion.div>
             ))}
           </div>
         </div>
@@ -71,3 +81,4 @@ export default function Products() {
     </div>
   );
 }
+
